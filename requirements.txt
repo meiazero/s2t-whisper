@@ -1,3 +1,4 @@
+accelerate==1.1.1
 certifi==2024.8.30
 cffi==1.17.1
 charset-normalizer==3.4.0
@@ -23,6 +24,7 @@ nvidia-nccl-cu12==2.21.5
 nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.4.127
 packaging==24.2
+psutil==6.1.0
 pycparser==2.22
 PyYAML==6.0.2
 regex==2024.11.6
