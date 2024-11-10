@@ -27,11 +27,20 @@ class AudioProcessor:
     """Processes audio data by resampling and slicing it into chunks if necessary."""
 
     def __init__(self, audio_data, sample_rate, target_sample_rate=16000, chunk_duration=15000):
-        self.audio_data = audio_data
+        self.audio_data = self.ensure_mono(audio_data)
         self.sample_rate = sample_rate
         self.target_sample_rate = target_sample_rate
         self.chunk_duration = self.adjust_chunk_duration(chunk_duration)
         self.resampled_audio = self.resample_audio()
+
+    @staticmethod
+    def ensure_mono(audio_data):
+        """Ensures audio is mono by averaging channels if it is multi-channel."""
+
+        if audio_data.ndim > 1:
+            Logger.log("Converting multi-channel audio to mono.")
+            audio_data = audio_data.mean(axis=1)
+        return audio_data
 
     def adjust_chunk_duration(self, chunk_duration):
         """Adjusts chunk duration to a maximum of 15 seconds if exceeded."""
@@ -62,6 +71,7 @@ class AudioProcessor:
 
     def slice_audio(self):
         """Slices the resampled audio into chunks."""
+
         samples_per_chunk = int(self.chunk_duration * self.target_sample_rate / 1000)
         chunks_audio_processor = [
             self.resampled_audio[i:i + samples_per_chunk]
