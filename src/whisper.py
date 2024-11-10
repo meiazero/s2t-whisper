@@ -25,9 +25,8 @@ class AudioProcessor:
 
         audio, sample_rate_audio_processor = sf.read(audio_path_audio_processor)
 
-        # Check if audio is multi-channel and convert to mono if necessary
-        if len(audio.shape) > 1:  # Multi-channel audio
-            audio = audio.mean(axis=1)  # Convert to mono by averaging channels
+        if len(audio.shape) > 1:
+            audio = audio.mean(axis=1)
 
         if sample_rate_audio_processor != self.target_sample_rate:
             raise ValueError(f"Expected sample rate of {self.target_sample_rate}, but got {sample_rate_audio_processor}")
@@ -43,14 +42,12 @@ class Transcriber:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-        # Load model and processor for Whisper
         self.model = AutoModelForSpeechSeq2Seq.from_pretrained(
             model_id_transcriber, torch_dtype=self.torch_dtype, low_cpu_mem_usage=True
         ).to(self.device)
 
         self.processor = AutoProcessor.from_pretrained(model_id_transcriber)
 
-        # Initialize pipeline
         self.pipe = pipeline(
             "automatic-speech-recognition",
             model=self.model,
