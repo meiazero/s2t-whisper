@@ -15,6 +15,7 @@ class AudioLoader:
 
     def load_audio(self):
         """Loads audio file with soundfile and returns the audio data and sample rate."""
+
         audio, sample_rate = sf.read(self.file_path)
         Logger.log(f"Audio loaded from {self.file_path}.")
         Logger.log(f"Audio duration: {len(audio) / sample_rate:.2f} seconds.")
@@ -34,6 +35,7 @@ class AudioProcessor:
 
     def adjust_chunk_duration(self, chunk_duration):
         """Adjusts chunk duration to a maximum of 15 seconds if exceeded."""
+
         max_duration = 15000  # 15 seconds in milliseconds
         if len(self.audio_data) / self.sample_rate > 15:
             chunk_duration = min(chunk_duration, max_duration)
@@ -42,6 +44,7 @@ class AudioProcessor:
 
     def resample_audio(self):
         """Resamples audio to the target sample rate."""
+
         if self.sample_rate != self.target_sample_rate:
             Logger.log(f"Resampling audio from {self.sample_rate} Hz to {self.target_sample_rate} Hz.")
             duration_in_seconds = len(self.audio_data) / self.sample_rate
@@ -78,6 +81,7 @@ class AudioSaver:
 
     def save_chunks(self, chunks_audio_saver, base_name="resampled_chunk", format_audio_saver="wav"):
         """Saves each chunk as an individual file."""
+
         for i, chunk in enumerate(chunks_audio_saver):
             chunk_path = self.output_dir / f"{base_name}_{i}.{format_audio_saver}"
             sf.write(chunk_path, chunk, 16000)  # Save each chunk at 16000 Hz

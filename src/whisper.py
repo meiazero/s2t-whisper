@@ -22,6 +22,7 @@ class AudioProcessor:
 
     def load_audio(self, audio_path_audio_processor):
         """Loads the audio file, converts to mono if necessary, and checks the sample rate."""
+
         audio, sample_rate_audio_processor = sf.read(audio_path_audio_processor)
 
         # Check if audio is multi-channel and convert to mono if necessary
@@ -62,7 +63,7 @@ class Transcriber:
 
     def transcribe(self, audio, sample_rate_transcriber):
         """Transcribes the loaded audio data using Whisper."""
-        # Passes audio with "raw" and "sampling_rate" keys
+
         result = self.pipe({"raw": audio, "sampling_rate": sample_rate_transcriber})
         transcription_transcribe = result["text"]
         Logger.log("Transcription completed.")
